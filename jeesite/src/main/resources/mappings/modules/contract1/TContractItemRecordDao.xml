@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.contract1.dao.TContractItemRecordDao">
+    
+	<sql id="tContractItemRecordColumns">
+		a.id AS "id",
+		a.make_date AS "makeDate",
+		a.commit_date AS "commitDate",
+		a.contract_num AS "contractNum",
+		a.record_num AS "recordNum",
+		a.record_name AS "recordName",
+		a.contract_cus_num AS "contractCusNum",
+		a.contract_name AS "contractName",
+		a.operator_name AS "operatorName",
+		a.operator_phone AS "operatorPhone",
+		a.operator_type AS "operatorType",
+		a.record_p_name AS "recordPName",
+		a.record_p_dept AS "recordPDept",
+		a.record_explain AS "recordExplain",
+		a.status AS "status",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="tContractItemRecordJoins">
+	</sql>
+<!--    根据合同编号查事件单 -->
+   <select id="getByContractNum" resultType="TContractItemRecord">
+		SELECT 
+			<include refid="tContractItemRecordColumns"/>
+		FROM t_contract_item_record a
+		<include refid="tContractItemRecordJoins"/>
+		WHERE a.contract_num = #{contractNum}
+	</select>
+<!--    根据合同编号更新事件单 -->
+<update id="updateByNum">
+		UPDATE t_contract_item_record SET 	
+			make_date = #{makeDate},
+			commit_date = #{commitDate},
+			contract_num = #{contractNum},
+			record_num = #{recordNum},
+			record_name = #{recordName},
+			contract_cus_num = #{contractCusNum},
+			contract_name = #{contractName},
+			operator_name = #{operatorName},
+			operator_phone = #{operatorPhone},
+			operator_type = #{operatorType},
+			record_p_name = #{recordPName},
+			record_p_dept = #{recordPDept},
+			record_explain = #{recordExplain},
+			status = #{status},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE contract_num = #{contractNum}
+	</update>
+	<!--    根据合同编号删除 -->
+	<update id="deleteByNum">
+		UPDATE t_contract_item_record SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE contract_num = #{contractNum}
+	</update>
+	<select id="get" resultType="TContractItemRecord">
+		SELECT 
+			<include refid="tContractItemRecordColumns"/>
+		FROM t_contract_item_record a
+		<include refid="tContractItemRecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TContractItemRecord">
+		SELECT 
+			<include refid="tContractItemRecordColumns"/>
+		FROM t_contract_item_record a
+		<include refid="tContractItemRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TContractItemRecord">
+		SELECT 
+			<include refid="tContractItemRecordColumns"/>
+		FROM t_contract_item_record a
+		<include refid="tContractItemRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO t_contract_item_record(
+			id,
+			make_date,
+			commit_date,
+			contract_num,
+			record_num,
+			record_name,
+			contract_cus_num,
+			contract_name,
+			operator_name,
+			operator_phone,
+			operator_type,
+			record_p_name,
+			record_p_dept,
+			record_explain,
+			status,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{makeDate},
+			#{commitDate},
+			#{contractNum},
+			#{recordNum},
+			#{recordName},
+			#{contractCusNum},
+			#{contractName},
+			#{operatorName},
+			#{operatorPhone},
+			#{operatorType},
+			#{recordPName},
+			#{recordPDept},
+			#{recordExplain},
+			#{status},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE t_contract_item_record SET 	
+			make_date = #{makeDate},
+			commit_date = #{commitDate},
+			contract_num = #{contractNum},
+			record_num = #{recordNum},
+			record_name = #{recordName},
+			contract_cus_num = #{contractCusNum},
+			contract_name = #{contractName},
+			operator_name = #{operatorName},
+			operator_phone = #{operatorPhone},
+			operator_type = #{operatorType},
+			record_p_name = #{recordPName},
+			record_p_dept = #{recordPDept},
+			record_explain = #{recordExplain},
+			status = #{status},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE t_contract_item_record SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

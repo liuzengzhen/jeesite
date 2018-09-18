@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.contract1.dao.TContractOperator2Dao">
+    
+	<sql id="tContractOperator2Columns">
+		a.id AS "id",
+		a.contract_id AS "contractId",
+		a.operator_name AS "operatorName",
+		a.operator_phone AS "operatorPhone",
+		a.operate_dept AS "operateDept",
+		a.operator_type AS "operatorType",
+		a.start_date AS "startDate",
+		a.end_date AS "endDate",
+		a.status AS "status",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.record_id AS "recordId"
+	</sql>
+	
+	<sql id="tContractOperator2Joins">
+	</sql>
+<!--     合同外键查询  -->
+	<select id="getByContractId" resultType="TContractOperator2">
+		SELECT 
+			<include refid="tContractOperator2Columns"/>
+		FROM t_contract_operator2 a
+		<include refid="tContractOperator2Joins"/>
+		WHERE a.contract_id = #{contractId}
+	</select>
+
+
+	<select id="get" resultType="TContractOperator2">
+		SELECT 
+			<include refid="tContractOperator2Columns"/>
+		FROM t_contract_operator2 a
+		<include refid="tContractOperator2Joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TContractOperator2">
+		SELECT 
+			<include refid="tContractOperator2Columns"/>
+		FROM t_contract_operator2 a
+		<include refid="tContractOperator2Joins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TContractOperator2">
+		SELECT 
+			<include refid="tContractOperator2Columns"/>
+		FROM t_contract_operator2 a
+		<include refid="tContractOperator2Joins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO t_contract_operator2(
+			id,
+			contract_id,
+			operator_name,
+			operator_phone,
+			operate_dept,
+			operator_type,
+			start_date,
+			end_date,
+			status,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			record_id
+		) VALUES (
+			#{id},
+			#{contractId},
+			#{operatorName},
+			#{operatorPhone},
+			#{operateDept},
+			#{operatorType},
+			#{startDate},
+			#{endDate},
+			#{status},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{recordId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE t_contract_operator2 SET 	
+			contract_id = #{contractId},
+			operator_name = #{operatorName},
+			operator_phone = #{operatorPhone},
+			operate_dept = #{operateDept},
+			operator_type = #{operatorType},
+			start_date = #{startDate},
+			end_date = #{endDate},
+			status = #{status},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			record_id = #{recordId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE t_contract_operator2 SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

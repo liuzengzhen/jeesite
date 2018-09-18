@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.contract1.dao.TContractBasic2Dao">
+    
+	<sql id="tContractBasic2Columns">
+		a.id AS "id",
+		a.contract_num AS "contractNum",
+		a.contract_cus_num AS "contractCusNum",
+		a.contract_name AS "contractName",
+		a.source_method_code AS "sourceMethodCode",
+		a.category_code AS "categoryCode",
+		a.type_code AS "typeCode",
+		a.status AS "status",
+		a.effective_date AS "effectiveDate",
+		a.end_date AS "endDate",
+		a.important_level AS "importantLevel",
+		a.currency AS "currency",
+		a.origin_totalsum AS "originTotalsum",
+		a.totalsum AS "totalsum",
+		a.totalsum_upper AS "totalsumUpper",
+		a.guarantee_money AS "guaranteeMoney",
+		a.qi_deposit_percent AS "qiDepositPercent",
+		a.qi_deposit_end_date AS "qiDepositEndDate",
+		a.workflow_id AS "workflowId",
+		a.relation_flag AS "relationFlag",
+		a.ispay_stamptax AS "ispayStamptax",
+		a.stamptax_type AS "stamptaxType",
+		a.stamptax_rate AS "stamptaxRate",
+		a.stamp_tax AS "stampTax",
+		a.stamp_tax_comment AS "stampTaxComment",
+		a.seal_method AS "sealMethod",
+		a.project_num AS "projectNum",
+		a.budget_project_num AS "budgetProjectNum",
+		a.description AS "description",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.record_id AS "recordId"
+	</sql>
+	
+	<sql id="tContractBasic2Joins">
+	</sql>
+<!--     根据合同编号查询合同-->
+	<select id="getnum" resultType="TContractBasic2">
+		SELECT 
+			<include refid="tContractBasic2Columns"/>
+		FROM t_contract_basic2 a
+		<include refid="tContractBasic2Joins"/>
+		WHERE a.contract_num = #{contractNum}
+	</select>
+
+
+	<select id="get" resultType="TContractBasic2">
+		SELECT 
+			<include refid="tContractBasic2Columns"/>
+		FROM t_contract_basic2 a
+		<include refid="tContractBasic2Joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TContractBasic2">
+		SELECT 
+			<include refid="tContractBasic2Columns"/>
+		FROM t_contract_basic2 a
+		<include refid="tContractBasic2Joins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TContractBasic2">
+		SELECT 
+			<include refid="tContractBasic2Columns"/>
+		FROM t_contract_basic2 a
+		<include refid="tContractBasic2Joins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO t_contract_basic2(
+			id,
+			contract_num,
+			contract_cus_num,
+			contract_name,
+			source_method_code,
+			category_code,
+			type_code,
+			status,
+			effective_date,
+			end_date,
+			important_level,
+			currency,
+			origin_totalsum,
+			totalsum,
+			totalsum_upper,
+			guarantee_money,
+			qi_deposit_percent,
+			qi_deposit_end_date,
+			workflow_id,
+			relation_flag,
+			ispay_stamptax,
+			stamptax_type,
+			stamptax_rate,
+			stamp_tax,
+			stamp_tax_comment,
+			seal_method,
+			project_num,
+			budget_project_num,
+			description,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			record_id
+		) VALUES (
+			#{id},
+			#{contractNum},
+			#{contractCusNum},
+			#{contractName},
+			#{sourceMethodCode},
+			#{categoryCode},
+			#{typeCode},
+			#{status},
+			#{effectiveDate},
+			#{endDate},
+			#{importantLevel},
+			#{currency},
+			#{originTotalsum},
+			#{totalsum},
+			#{totalsumUpper},
+			#{guaranteeMoney},
+			#{qiDepositPercent},
+			#{qiDepositEndDate},
+			#{workflowId},
+			#{relationFlag},
+			#{ispayStamptax},
+			#{stamptaxType},
+			#{stamptaxRate},
+			#{stampTax},
+			#{stampTaxComment},
+			#{sealMethod},
+			#{projectNum},
+			#{budgetProjectNum},
+			#{description},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{recordId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE t_contract_basic2 SET 	
+			contract_num = #{contractNum},
+			contract_cus_num = #{contractCusNum},
+			contract_name = #{contractName},
+			source_method_code = #{sourceMethodCode},
+			category_code = #{categoryCode},
+			type_code = #{typeCode},
+			status = #{status},
+			effective_date = #{effectiveDate},
+			end_date = #{endDate},
+			important_level = #{importantLevel},
+			currency = #{currency},
+			origin_totalsum = #{originTotalsum},
+			totalsum = #{totalsum},
+			totalsum_upper = #{totalsumUpper},
+			guarantee_money = #{guaranteeMoney},
+			qi_deposit_percent = #{qiDepositPercent},
+			qi_deposit_end_date = #{qiDepositEndDate},
+			workflow_id = #{workflowId},
+			relation_flag = #{relationFlag},
+			ispay_stamptax = #{ispayStamptax},
+			stamptax_type = #{stamptaxType},
+			stamptax_rate = #{stamptaxRate},
+			stamp_tax = #{stampTax},
+			stamp_tax_comment = #{stampTaxComment},
+			seal_method = #{sealMethod},
+			project_num = #{projectNum},
+			budget_project_num = #{budgetProjectNum},
+			description = #{description},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			record_id = #{recordId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE t_contract_basic2 SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

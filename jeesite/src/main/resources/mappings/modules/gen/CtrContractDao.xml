@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.gen.dao.CtrContractDao">
+	<!--获取合同信息表数据 -->
+    <select id="findAllList" resultType="CtrContract">
+		select * from ctr_contract
+	</select>
+	
+	<!-- 根据合同编号查询合同信息 -->
+	<select id="get" resultType="CtrContract">
+		SELECT * FROM ctr_contract WHERE code = #{code}
+	</select>
+	
+	<!-- 保存合同信息 -->
+	<insert id="insert">
+		INSERT INTO ctr_contract(ID,CODE,CONTRACT_NAME,PROJECT_NAME,CONTRACT_TYPE,CONTRACT_SORT,CONTRACT_LEVEL ,CONTRACT_SOURCE) 
+		VALUES
+		 (#{id},#{code},#{contractName},#{projectName},#{contractType},#{contractSort},#{contractLevel},#{contractSource})
+	</insert>
+	
+	<update id="update">
+		UPDATE ctr_contract set
+		CONTRACT_NAME = #{contractName},
+		PROJECT_NAME = #{projectName},
+		CONTRACT_TYPE = #{contractType},
+		CONTRACT_SORT = #{contractSort},
+		CONTRACT_LEVEL = #{contractLevel},
+		CONTRACT_SOURCE = #{contractSource}
+		where code = #{code}
+	</update>
+	
+</mapper>

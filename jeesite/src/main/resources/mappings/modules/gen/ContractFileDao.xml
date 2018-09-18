@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.gen.dao.ContractFileDao">
+    
+    <select id="findAllList" resultType="ContractFile">
+		select * from CTR_CONTRACT_FILE
+	</select>
+	
+	<!-- 获取合同附件表信息数据-->
+	<select id="get" resultType="ContractFile">
+		select * from CTR_CONTRACT_FILE where id=#{id}
+	</select>
+	
+	<!-- 保存附件信息 -->
+	<insert id="insert">
+		INSERT INTO CTR_CONTRACT_FILE(
+			ID,
+			CTR_CONTRACT_ID
+		) VALUES (
+			#{id},
+			#{crtContractId}
+		)
+	</insert>
+	
+	<!-- 保存合同附件表信息 -->
+	<insert id="save">
+		INSERT INTO CTR_CONTRACT_FILE(
+			ID, 
+			CTR_CONTRACT_ID,
+			FILE_SORT,
+			NAME,
+			FILE_POSITION,
+			FILE_NAME,
+			FILE_NOTE,
+			FILE_AUTHOR,
+			FILE_VERSION,
+			UPLOADDATE
+		) VALUES (
+			#{id},
+			#{crtContractId},
+			#{fileSort},
+			#{name},
+			#{filePosition},
+			#{fileName},
+			#{fileNote},
+			#{fileAuthor},
+			#{fileVersion},
+			#{uploadDate}
+		)
+	</insert>
+	
+	<!-- 更新附件信息 -->
+	<update id="update">
+		UPDATE CTR_CONTRACT_FILE SET  
+			FILE_SORT = #{fileSort},
+			FILE_POSITION = #{filePosition},
+			FILE_NAME = #{fileName},
+			FILE_NOTE = #{fileNote},
+			FILE_AUTHOR = #{fileAuthor},
+			UPLOADDATE = #{uploadDate},
+			FILE_VERSION = #{fileVersion}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除合同附件信息 -->
+	<delete id="delete">
+		delete from CTR_CONTRACT_FILE where id=#{id}
+	</delete>
+	
+</mapper>

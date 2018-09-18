@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.cont.dao.ContractDao">
+    
+	<sql id="contractColumns">
+		a.ID AS "id",
+		a.CONTRACT_NUM AS "contractNum",
+		a.CONTRACT_NAME AS "contractName",
+		a.TOTALSUM AS "totalsum",
+		a.CONCLUDE_BASE AS "conludeBase",
+		a.DESCRIPTION AS "description",
+		a.OPPOSITEENTERPRISE AS "oppositeEnterprise",
+		a.FILES AS "files",
+		a.STATUS AS "status",
+		a.PERFORM_STARTDATE AS "performStartDate",
+		a.PERFORM_ENDDATE AS "performEndDate",
+		a.CATEGORY_ID AS "contCategory.id",
+		a.TYPE_ID AS "type",
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.DEL_FLAG AS "delFlag"
+	</sql>
+	
+	<sql id="contractJoins">
+	</sql>
+    
+	<select id="get" resultType="Contract">
+		SELECT 
+			<include refid="contractColumns"/>
+		FROM cont_contract a
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Contract">
+		SELECT 
+			<include refid="contractColumns"/>
+		FROM cont_contract a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<!-- 自己起草的合同-->
+		<if test="isSelf">
+			AND a.create_by = #{currentUser.id}
+		</if>
+		<if test="contractName != null and contractName != ''">
+			AND a.CONTRACT_NAME LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contractName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contractName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{contractName}, '%')</if>
+		</if>
+		<if test="contractNum != null and contractNum != ''">
+			AND a.CONTRACT_NUM LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contractNum}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contractNum}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{contractNum}, '%')</if>
+		</if>
+		<if test="contCategory != null and contCategory.id != null and contCategory.id != ''">
+			AND a.category_id = #{contCategory.id}
+		</if>
+		<if test="type != null and type != ''">
+			AND a.type_id = #{type}
+		</if>
+		<if test="status != null and status != ''">
+			AND a.STATUS = #{status}
+		</if>
+		ORDER BY a.update_date DESC
+	</select>
+	
+	<select id="findAllList" resultType="Contract">
+		SELECT 
+			<include refid="contractColumns"/>
+		FROM cont_contract a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		ORDER BY a.update_date DESC
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM cont_contract a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="isSelf">
+			AND a.create_by = #{currentUser.id}
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cont_contract(
+			ID,
+			CONTRACT_NUM,
+			CONTRACT_NAME,
+			TOTALSUM,
+			CONCLUDE_BASE,
+			DESCRIPTION,
+			OPPOSITEENTERPRISE,
+			FILES,
+			STATUS,
+			PERFORM_STARTDATE,
+			PERFORM_ENDDATE,
+			CATEGORY_ID,
+			TYPE_ID,
+			CREATE_BY,
+			CREATE_DATE,
+			UPDATE_BY,
+			UPDATE_DATE,
+			DEL_FLAG
+		) VALUES (
+			#{id},
+			#{contractNum},
+			#{contractName},
+			#{totalSum},
+			#{conludeBase},
+			#{description},
+			#{oppositeEnterprise},
+			#{files},
+			#{status},
+			#{performStartDate},
+			#{performEndDate},
+			#{contCategory.id},
+			#{type},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cont_contract SET 	
+			CONTRACT_NUM = #{contractNum},
+			CONTRACT_NAME = #{contractName},
+			TOTALSUM = #{totalSum},
+			CONCLUDE_BASE = #{conludeBase},
+			DESCRIPTION = #{description},
+			OPPOSITEENTERPRISE = #{oppositeEnterprise},
+			FILES = #{files},
+			STATUS = #{status},
+			PERFORM_STARTDATE = #{performStartDate},
+			PERFORM_ENDDATE = #{performEndDate},
+			CATEGORY_ID = #{contCategory.id},
+			TYPE_ID = #{type},
+			UPDATE_BY = #{updateBy.id},
+			UPDATE_DATE = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE cont_contract SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
